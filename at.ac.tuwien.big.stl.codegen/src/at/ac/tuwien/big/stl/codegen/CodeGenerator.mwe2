@@ -1,0 +1,56 @@
+module generator
+
+import org.eclipse.emf.mwe.utils.*
+
+var targetDir = "src-gen"
+var modelPath = "models"
+var slotID = "models-slot"
+
+Workflow {
+
+	bean = StandaloneSetup {
+		registerGeneratedEPackage = "at.ac.tuwien.big.stl.STLPackage"
+		registerGeneratedEPackage = "at.ac.tuwien.big.stl.simulation.STLSimulationPackage"
+	}
+
+	component = DirectoryCleaner {
+		directory = targetDir
+	}
+
+	component = at.ac.tuwien.big.stl.codegen.HTMLGeneratorSupport {}
+
+	component = at.ac.tuwien.big.stl.codegen.ServerGeneratorSupport {}
+
+	component = at.ac.tuwien.big.stl.codegen.OCLEnabledResourceReader {
+		path = modelPath
+		register = at.ac.tuwien.big.stl.codegen.HTMLGeneratorSetup {}
+		loadResource = {
+			slot = slotID
+		}
+	}
+
+	component = org.eclipse.xtext.generator.GeneratorComponent {
+		register = at.ac.tuwien.big.stl.codegen.HTMLGeneratorSetup {}
+		slot = slotID
+		outlet = {
+			path = targetDir
+		}
+	}
+
+	component = at.ac.tuwien.big.stl.codegen.OCLEnabledResourceReader {
+		path = modelPath
+		register = at.ac.tuwien.big.stl.codegen.ServerGeneratorSetup {}
+		loadResource = {
+			slot = slotID
+		}
+	}
+
+	component = org.eclipse.xtext.generator.GeneratorComponent {
+		register = at.ac.tuwien.big.stl.codegen.ServerGeneratorSetup {}
+		slot = slotID
+		outlet = {
+			path = targetDir
+		}
+	}
+
+}

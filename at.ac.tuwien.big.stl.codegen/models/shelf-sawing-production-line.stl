@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<at.ac.tuwien.big.stl:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:at.ac.tuwien.big.stl="http://www.big.tuwien.ac.at/Stl" name="Shelf Sawing Production Line">
+  <areas name="Production Area">
+    <components xsi:type="at.ac.tuwien.big.stl:ItemGenerator" name="Raw Shelf Producer" cost="1000" generatedType="//@itemTypes.0">
+      <services name="produceRawShelf" cost="20" processingTime="60000" reliability="0.9"/>
+      <outputSlots name="RawShelfProducer_Output" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Conveyor" name="To-Buffer Conveyor" cost="200">
+      <services name="convey" cost="6" processingTime="3100" reliability="0.98"/>
+      <outputSlots name="ToBufferConveyor_Output" requiredType="//@itemTypes.0"/>
+      <inputSlots name="ToBufferConveyor_Input" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Buffer" name="Buffer" cost="200">
+      <services name="buffer" cost="7" processingTime="500" reliability="0.98"/>
+      <outputSlots name="Buffer_Output" requiredType="//@itemTypes.0"/>
+      <inputSlots name="Buffer_Input" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Machine" name="Sawing Machine" cost="1000">
+      <services name="saw" cost="10" processingTime="4000" reliability="0.98">
+        <parameters name="x"/>
+        <parameters name="y"/>
+        <parameters name="z"/>
+      </services>
+      <outputSlots name="SawingMachine_ProductOutput" requiredType="//@itemTypes.1"/>
+      <outputSlots name="SawingMachine_WasteOutput" requiredType="//@itemTypes.2"/>
+      <inputSlots name="SawingMachine_Input" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Conveyor" name="To-Shelf-Store Conveyor" cost="200">
+      <services name="transport" cost="5" processingTime="3050" reliability="0.99"/>
+      <outputSlots name="ToShelfStoreConveyor_Output" requiredType="//@itemTypes.1"/>
+      <inputSlots name="ToShelfStoreConveyor_Input" requiredType="//@itemTypes.1"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Conveyor" name="To-Waste-Store Conveyor" cost="200">
+      <services name="deliver" cost="4" processingTime="3000" reliability="0.99"/>
+      <outputSlots name="ToWasteStoreConveyor_Output" requiredType="//@itemTypes.2"/>
+      <inputSlots name="ToWasteStoreConveyor_Input" requiredType="//@itemTypes.2"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:TurnTable" name="Turn Table" cost="200">
+      <services name="turn" cost="3" processingTime="1800" reliability="0.99"/>
+      <outputSlots name="TurnTable_Output" requiredType="//@itemTypes.2"/>
+      <inputSlots name="TurnTable_Input" requiredType="//@itemTypes.2"/>
+    </components>
+    <connectors entry="//@areas.0/@components.0/@outputSlots.0" exit="//@areas.0/@components.1/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.2/@outputSlots.0" exit="//@areas.0/@components.3/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.1/@outputSlots.0" exit="//@areas.0/@components.2/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.3/@outputSlots.0" exit="//@areas.0/@components.4/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.3/@outputSlots.1" exit="//@areas.0/@components.6/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.6/@outputSlots.0" exit="//@areas.0/@components.5/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.5/@outputSlots.0" exit="//@areas.1/@components.1/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.4/@outputSlots.0" exit="//@areas.1/@components.0/@inputSlots.0"/>
+  </areas>
+  <areas name="Store Area">
+    <components xsi:type="at.ac.tuwien.big.stl:ProductStore" name="Shelf Store" cost="1000" capacity="500">
+      <services name="storeShelf" cost="2" processingTime="2000"/>
+      <inputSlots name="ShelfStore_Input" requiredType="//@itemTypes.1"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:WasteStore" name="Wood Waste Store" cost="800" capacity="5000">
+      <services name="storeWoodWaste" cost="1" processingTime="1500"/>
+      <inputSlots name="WoodWasteStore_Input" requiredType="//@itemTypes.2"/>
+    </components>
+  </areas>
+  <itemTypes name="Raw Shelf" description="Raw piece of wood"/>
+  <itemTypes name="Shelf" description="Finished shelf"/>
+  <itemTypes name="Wood Waste" description="Wood that goes to waste"/>
+</at.ac.tuwien.big.stl:System>

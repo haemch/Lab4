@@ -1,0 +1,20 @@
+A list of possible OCL constraints defined in the solution and implemented in the .ecore file:
+
+* Constraint 01 OneInputSlot: Conveyors have exactly one input slot
+* Constraint 02 OneOutputSlot: Conveyors have exactly one output slot
+* Constraint 03 AtLeastOneInputSlot: Machines have at least one input slot
+* Constraint 04 AtLeastOneOutputSlot: Machines have at least one output slot
+* Constraint 05 OneInputSlot: Buffers have exactly one input slot
+* Constraint 06 OneOutputSlot: Buffers have exactly one output slot
+* Constraint 07 OneInputSlot: Stores have exactly one input slot
+* Constraint 08 NoOutputSlot: Stores have no output slot			
+* Constraint 09 AtLeastOneInputSlot: Turntables have at least one input slot		
+* Constraint 10 AtLeastOneOutputslot: Turntables have at least one ouput slot
+* Constraint 11 NoInputSlot: ItemGenerators have no input slot
+* Constraint 12 OneOutputSlot: ItemGenerators have exactly one output slot
+* Constraint 13 ItemTypeHasToMatch: The required type of the output slot of an ItemGenerator has to be the same as the generated type
+* Constraint 14 ConnectedSlotsHaveToMatch: The two slots connected by a Connector have to be of the same type (requiredType)
+* Constraint 15 ConnectorsHaveToConnectInputAndOutputSlots: A connector has to connect one output slot (entry) with one input slot (exit)
+* Constraint 16 ConnectorsHaveToConnectSlotsOfDifferentComponents: A connector has to connect slots that are contained by different components
+* Constraint 17 ReliabilityBetween0And1: The reliability of a service is a value between 0 and 1.
+* Constraint 18 ConnectorInSourceArea: A connector has to be defined in the area that also contains the component owning the connected output slot.

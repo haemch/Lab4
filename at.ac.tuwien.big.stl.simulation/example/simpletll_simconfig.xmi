@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation:SimConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:simulation="http://www.big.tuwien.ac.at/stl/simulation"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/stl/simulation ../model/simulation.ecore"/>

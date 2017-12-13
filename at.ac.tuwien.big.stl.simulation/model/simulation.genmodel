@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/at.ac.tuwien.big.stl.simulation/src-gen" creationIcons="false"
+    editDirectory="/at.ac.tuwien.big.stl.simulation.edit/src-gen" editorDirectory="/at.ac.tuwien.big.stl.simulation.editor/src-gen"
+    modelPluginID="at.ac.tuwien.big.stl.simulation" modelName="Simulation" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0"
+    copyrightFields="false" usedGenPackages="../../at.ac.tuwien.big.stl/model/stl.genmodel#//stl"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>simulation.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="STLSimulation" basePackage="at.ac.tuwien.big.stl" disposableProviderFactory="true"
+      ecorePackage="simulation.ecore#/">
+    <genClasses ecoreClass="simulation.ecore#//SimConfiguration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/simulationTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/budget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/remainingBudget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/itemThroughput"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/averageLatency"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/averageQuality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//SimConfiguration/simSpeed"/>
+    </genClasses>
+    <genClasses ecoreClass="simulation.ecore#//ComponentInfo">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ComponentInfo/isBusy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ComponentInfo/creationTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ComponentInfo/useTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ComponentInfo/utilization"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference simulation.ecore#//ComponentInfo/component"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ComponentInfo/processingTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ComponentInfo/reliability"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference simulation.ecore#//ComponentInfo/outputConnectors"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference simulation.ecore#//ComponentInfo/inputConnectors"/>
+      <genOperations ecoreOperation="simulation.ecore#//ComponentInfo/process"/>
+    </genClasses>
+    <genClasses ecoreClass="simulation.ecore#//SimulationModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference simulation.ecore#//SimulationModel/configuration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference simulation.ecore#//SimulationModel/componentInfos"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference simulation.ecore#//SimulationModel/system"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference simulation.ecore#//SimulationModel/connectorInfos"/>
+      <genOperations ecoreOperation="simulation.ecore#//SimulationModel/simulate"/>
+    </genClasses>
+    <genClasses ecoreClass="simulation.ecore#//StoreInfo">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference simulation.ecore#//StoreInfo/storedItems"/>
+    </genClasses>
+    <genClasses ecoreClass="simulation.ecore#//ItemInfo">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ItemInfo/finalizationTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ItemInfo/totalLatency"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ItemInfo/quality"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference simulation.ecore#//ItemInfo/itemtype"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ItemInfo/creationTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ItemInfo/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ItemInfo/state"/>
+    </genClasses>
+    <genClasses ecoreClass="simulation.ecore#//ConnectorInfo">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference simulation.ecore#//ConnectorInfo/item"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference simulation.ecore#//ConnectorInfo/connector"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute simulation.ecore#//ConnectorInfo/requiredState"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated stl -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="at.ac.tuwien.big.stl.presentation.STLModelWizardID"
+            name="%_UI_STLModelWizard_label"
+            class="at.ac.tuwien.big.stl.presentation.STLModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/STLModelFile.gif">
+         <description>%_UI_STLModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated stl -->
+      <editor
+            id="at.ac.tuwien.big.stl.presentation.STLEditorID"
+            name="%_UI_STLEditor_label"
+            icon="icons/full/obj16/STLModelFile.gif"
+            extensions="stl"
+            class="at.ac.tuwien.big.stl.presentation.STLEditor"
+            contributorClass="at.ac.tuwien.big.stl.presentation.STLActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

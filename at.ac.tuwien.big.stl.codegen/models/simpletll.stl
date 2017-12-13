@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<at.ac.tuwien.big.stl:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:at.ac.tuwien.big.stl="http://www.big.tuwien.ac.at/Stl" name="SimpleTransportationLine">
+  <areas name="SampleArea">
+    <components xsi:type="at.ac.tuwien.big.stl:ItemGenerator" name="CheapPrinter1" cost="1000" generatedType="//@itemTypes.0">
+      <services name="generate" cost="1000" processingTime="60000" reliability="0.9"/>
+      <outputSlots name="CheapPriner1_out" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:ItemGenerator" name="CheapPrinter2" cost="1000" generatedType="//@itemTypes.0">
+      <services name="generate" cost="1000" processingTime="60000" reliability="0.9"/>
+      <outputSlots name="CheapPrinter2_out" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Machine" name="CheapMachine" cost="500">
+      <services name="assemble" cost="500" processingTime="20000" reliability="0.8"/>
+      <outputSlots name="CheapMachine_out" requiredType="//@itemTypes.1"/>
+      <inputSlots name="CheapMachine_in" requiredType="//@itemTypes.0"/>
+      <inputSlots name="CheapMachine_in2" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:TurnTable" name="Turntable1" cost="700">
+      <services name="turn" cost="700" processingTime="10000"/>
+      <outputSlots name="TurnTable1_out" requiredType="//@itemTypes.1"/>
+      <outputSlots name="TurnTable1_out2" requiredType="//@itemTypes.1"/>
+      <inputSlots name="TurnTable1_in" requiredType="//@itemTypes.1"/>
+      <inputSlots name="TurnTable1_in2" requiredType="//@itemTypes.1"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:WasteStore" name="WasteStore" capacity="1000000">
+      <services name="store" processingTime="10000"/>
+      <inputSlots name="WasteStore_in" requiredType="//@itemTypes.1"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:ProductStore" name="ProductStore" capacity="1000000">
+      <services name="store" processingTime="10000"/>
+      <inputSlots name="ProductStore_in" requiredType="//@itemTypes.1"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Conveyor" name="Conveyor1" cost="500">
+      <services name="transport" cost="500" processingTime="5000"/>
+      <outputSlots name="Conveyor1_out" requiredType="//@itemTypes.0"/>
+      <inputSlots name="Conveyor1_in" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Conveyor" name="Conveyor2">
+      <services name="transport" cost="500" processingTime="5000"/>
+      <outputSlots name="Conveyor2_out" requiredType="//@itemTypes.0"/>
+      <inputSlots name="Conveyor2_in" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:TurnTable" name="TurnTable2" cost="1000">
+      <services name="turn" cost="1000" processingTime="5000"/>
+      <outputSlots name="TurnTable2_out2" requiredType="//@itemTypes.0"/>
+      <outputSlots name="TurnTable2_out" requiredType="//@itemTypes.0"/>
+      <inputSlots name="TurnTable2_in" requiredType="//@itemTypes.0"/>
+      <inputSlots name="TurnTable2_in2" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:ItemGenerator" name="Printer1" cost="2000" generatedType="//@itemTypes.0">
+      <services name="generate" cost="2000" processingTime="60000"/>
+      <outputSlots name="Printer1_out" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:ItemGenerator" name="Printer2" cost="2000" generatedType="//@itemTypes.0">
+      <services name="generate" cost="2000" processingTime="60000"/>
+      <outputSlots name="Printer2_out" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Buffer" name="Buffer" cost="500">
+      <services name="store" cost="1000" processingTime="500"/>
+      <outputSlots name="Buffer_out" requiredType="//@itemTypes.0"/>
+      <inputSlots name="Buffer_in" requiredType="//@itemTypes.0"/>
+    </components>
+    <components xsi:type="at.ac.tuwien.big.stl:Machine" name="Machine2" cost="5000">
+      <services name="assemble" cost="5000" processingTime="20000"/>
+      <outputSlots name="Machine2_out" requiredType="//@itemTypes.1"/>
+      <inputSlots name="Machine2_in" requiredType="//@itemTypes.0"/>
+      <inputSlots name="Machine2_in2" requiredType="//@itemTypes.0"/>
+    </components>
+    <connectors entry="//@areas.0/@components.0/@outputSlots.0" exit="//@areas.0/@components.6/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.1/@outputSlots.0" exit="//@areas.0/@components.7/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.6/@outputSlots.0" exit="//@areas.0/@components.2/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.7/@outputSlots.0" exit="//@areas.0/@components.2/@inputSlots.1"/>
+    <connectors entry="//@areas.0/@components.2/@outputSlots.0" exit="//@areas.0/@components.3/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.9/@outputSlots.0" exit="//@areas.0/@components.8/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.10/@outputSlots.0" exit="//@areas.0/@components.8/@inputSlots.1"/>
+    <connectors entry="//@areas.0/@components.8/@outputSlots.1" exit="//@areas.0/@components.12/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.8/@outputSlots.0" exit="//@areas.0/@components.11/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.11/@outputSlots.0" exit="//@areas.0/@components.12/@inputSlots.1"/>
+    <connectors entry="//@areas.0/@components.12/@outputSlots.0" exit="//@areas.0/@components.3/@inputSlots.1"/>
+    <connectors entry="//@areas.0/@components.3/@outputSlots.0" exit="//@areas.0/@components.4/@inputSlots.0"/>
+    <connectors entry="//@areas.0/@components.3/@outputSlots.1" exit="//@areas.0/@components.5/@inputSlots.0"/>
+  </areas>
+  <itemTypes name="SimplePrint" description="Represents a simple 3D Print"/>
+  <itemTypes name="ComposedPrint" description="Represents a composed 3D Print produced by a machine"/>
+</at.ac.tuwien.big.stl:System>

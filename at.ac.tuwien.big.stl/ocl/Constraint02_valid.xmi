@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<at.ac.tuwien.big.stl:System
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:at.ac.tuwien.big.stl="http://www.big.tuwien.ac.at/Stl"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/Stl ../model/stl.ecore"
+    name="TestSystem">
+  <areas name="Area1">
+    <components
+        xsi:type="at.ac.tuwien.big.stl:Conveyor"
+        name="C1">
+      <outputSlots
+          name="Test"
+          requiredType="//@itemTypes.0"/>
+      <inputSlots
+          name="Tst2"
+          requiredType="//@itemTypes.0"/>
+    </components>
+  </areas>
+  <itemTypes
+      name="T1"
+      description="Typ"/>
+</at.ac.tuwien.big.stl:System>

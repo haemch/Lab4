@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation:SimulationModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:simulation="http://www.big.tuwien.ac.at/stl/simulation">
+  <configuration
+      simulationTime="2880000"
+      budget="100000"
+      remainingBudget="100000"
+      simSpeed="100.0"/>
+  <system href="simpletll.stl#/"/>
+</simulation:SimulationModel>

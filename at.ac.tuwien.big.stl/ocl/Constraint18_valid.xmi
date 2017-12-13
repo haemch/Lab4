@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<at.ac.tuwien.big.stl:System
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:at.ac.tuwien.big.stl="http://www.big.tuwien.ac.at/Stl"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/Stl ../model/stl.ecore"
+    name="TestSystem">
+  <areas name="Area1">
+    <components
+        xsi:type="at.ac.tuwien.big.stl:ItemGenerator"
+        name="ItemGenerator1"
+        generatedType="//@itemTypes.0">
+      <outputSlots
+          name="Service1Output1"
+          requiredType="//@itemTypes.0"/>
+    </components>
+    <connectors
+        entry="//@areas.0/@components.0/@outputSlots.0"
+        exit="//@areas.1/@components.0/@inputSlots.0"/>
+  </areas>
+  <areas name="Area2">
+    <components
+        xsi:type="at.ac.tuwien.big.stl:ProductStore"
+        name="Store1">
+      <inputSlots
+          name="Store1Input1"
+          requiredType="//@itemTypes.0"/>
+    </components>
+  </areas>
+  <itemTypes
+      name="ItemType1"
+      description="ItemType1"/>
+</at.ac.tuwien.big.stl:System>

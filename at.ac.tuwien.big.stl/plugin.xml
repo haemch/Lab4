@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated stl -->
+      <package
+            uri="http://www.big.tuwien.ac.at/Stl"
+            class="at.ac.tuwien.big.stl.STLPackage"
+            genModel="model/stl.genmodel"/>
+   </extension>
+
+</plugin>
