@@ -10,6 +10,9 @@ import org.eclipse.xtext.generator.IFileSystemAccessExtension3
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.emf.common.util.EList
 import at.ac.tuwien.big.stl.Area
+import at.ac.tuwien.big.stl.Component
+import at.ac.tuwien.big.stl.Buffer
+import at.ac.tuwien.big.stl.Store
 
 class HTMLGenerator implements IGenerator {
 
@@ -22,7 +25,7 @@ class HTMLGenerator implements IGenerator {
 		// copy static HTML resources: images, JavaScript, CSS
 		copyFiles(new File("html"), system.outputDir + "/" + "html" + File.separator, fsa);
 		
-		// TODO generate index.html; consider the helpers defined below
+		// generate index.html; consider the helpers defined below
 		fsa.generateFile(system.outputDir + "/" + "html" + "/"+"index.html", generateSystemCode(system));
 		// TODO generate details pages details_*.html for components; consider the helpers defined below
 
@@ -93,27 +96,105 @@ class HTMLGenerator implements IGenerator {
 					</dl>
 				</div>
 			</aside>
-	
+			
 			<main aria-labelledby="devicesheadline">
 				<h2 class="main-headline" id="devicesheadline">Components</h2>
-					«generateAreaCode(system.areas)»
+				«generateAreaCode(system.areas)»
 			</main>
 		</div>
 		<footer>
-			© 2017 BIG Smart Production
+		© 2017 BIG Smart Production
 		</footer>
 	</body>
 	'''
 	
 	def generateAreaCode(EList<Area> list) '''
+		«FOR Area a: list»
+			<h3>«a.name»</h3>
+				<div class="devices">
+					«generateComponentsCode(a.components)»
+				</div>
+		«ENDFOR»
+	'''
+	
+	def generateComponentsCode(EList<Component> list) '''
+		«FOR Component c: list»
+			«generateComponentCode(c)»
+		«ENDFOR»
+	'''
+	
+	def dispatch generateComponentCode(Component c) '''
+		<div class="device-outer">
+			<a href="details_«toAlphaNumerical(c.name)».html" class="device" title="More information about this component">
+				<div class="device-image-container">
+					<img class="device-image" width="180" height="180" src="images/«formatComponentName(c.class.simpleName).toLowerCase ».png" alt="Component image">
+				</div>
+				<dl class="device-properties">
+					<dt>Name</dt>
+					<dd class="device-displayname">«c.name»</dd>
+					<dt>Type</dt>
+					<dd class="visible device-type">«formatComponentName(c.class.simpleName)»</dd>
+					<dt class="visible">Utilization</dt>
+					<dd id="device_«toAlphaNumerical(c.name)»_utilisation" class="visible device-utilisation">0<dd>
+				</dl>
+			</a>
+		</div>
+	'''
+	def dispatch generateComponentCode(Buffer b) '''
+		<div class="device-outer">
+			<a href="details_«toAlphaNumerical(b.name)».html" class="device" title="More information about this component">
+				<div class="device-image-container">
+					<img class="device-image" width="180" height="180" src="images/«formatComponentName(b.class.simpleName).toLowerCase ».png" alt="Component image">
+				</div>
+				<dl class="device-properties">
+					<dt>Name</dt>
+					<dd class="device-displayname">«b.name»</dd>
+					<dt>Type</dt>
+					<dd class="visible device-type">«formatComponentName(b.class.simpleName)»</dd>
+					<dt class="visible">Utilization</dt>
+					<dd id="device_«toAlphaNumerical(b.name)»_utilisation" class="visible device-utilisation">0<dd>
+					<dt class="visible">Elements</dt>
+					<dd id="device_«toAlphaNumerical(b.name)»_elements" class="visible device-utilisation">0<dd>
+				</dl>
+			</a>
+		</div>
+	'''
+	def dispatch generateComponentCode(Store s) '''
+		<div class="device-outer">
+			<a href="details_«toAlphaNumerical(s.name)».html" class="device" title="More information about this component">
+				<div class="device-image-container">
+					<img class="device-image" width="180" height="180" src="images/«formatComponentName(s.class.simpleName).toLowerCase ».png" alt="Component image">
+				</div>
+				<dl class="device-properties">
+					<dt>Name</dt>
+					<dd class="device-displayname">«s.name»</dd>
+					<dt>Type</dt>
+					<dd class="visible device-type">«formatComponentName(s.class.simpleName)»</dd>
+					<dt class="visible">Utilization</dt>
+					<dd id="device_«toAlphaNumerical(s.name)»_utilisation" class="visible device-utilisation">0<dd>
+					<dt class="visible">Elements</dt>
+					<dd id="device_«toAlphaNumerical(s.name)»_elements" class="visible device-utilisation">0<dd>
+				</dl>
+			</a>
+		</div>
 	'''
 	
 	
 	
+	def returnTotalCost(System system){
+		var sum=0;
+		
+		for(Area a:system.areas){
+			for(Component c: a.components){
+				sum+= c.cost;
+			}
+		}
+		formatInteger(sum)
+	}
 	
-	def returnTotalCost(System system) '''
-	test cost
-	'''
+	private def String formatComponentName(String s){
+		s.substring(0, s.length-4);
+	}
 
 
 	/**
