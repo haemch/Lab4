@@ -8,6 +8,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IFileSystemAccessExtension3
 import org.eclipse.xtext.generator.IGenerator
+import org.eclipse.emf.common.util.EList
+import at.ac.tuwien.big.stl.Area
 
 class HTMLGenerator implements IGenerator {
 
@@ -21,7 +23,7 @@ class HTMLGenerator implements IGenerator {
 		copyFiles(new File("html"), system.outputDir + "/" + "html" + File.separator, fsa);
 		
 		// TODO generate index.html; consider the helpers defined below
-		
+		fsa.generateFile(system.outputDir + "/" + "html" + "/"+"index.html", generateSystemCode(system));
 		// TODO generate details pages details_*.html for components; consider the helpers defined below
 
 	}
@@ -42,6 +44,77 @@ class HTMLGenerator implements IGenerator {
 			}
 		}
 	}
+	
+	def generateSystemCode(System system) '''
+	<!doctype html>
+	<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<title>BIG Smart Production Control Panel - Components</title>
+		<link rel="stylesheet" href="styles/style.css">
+		<script src="script/jquery-3.2.1.js" ></script>
+		<script src="script/connect.js" ></script>
+		<script type="text/javascript">
+			$(function() {
+				getTotalStatus();
+				webSocket(null);
+			});
+		</script>
+	</head>
+	<body>
+		<header aria-labelledby="bannerheadline">
+			<a href="index.html"><img class="title-image" src="images/big-logo-small.png" alt="BIG Smart Production logo"></a>
+			<h1 class="header-title" id="bannerheadline">BIG Smart Production Control Panel</h1>  
+			<nav>
+		    	<ul class="navigation-list">
+		    		<li class="nav-items">
+		        		<ul>
+		        			<li><a href="#" onclick="restartSimulation()" class="button" accesskey="2">Start</a></li>
+		        		</ul>
+		      		</li>
+		      	</ul>
+			</nav>  
+		</header>
+		<div class="main-container">
+			<aside class="sidebar" aria-labelledby="serverinfoheadline">
+				<div class="production-info-container">
+					<h2 class="accessibility" id="serverinfoheadline">Production Status</h2>
+					<dl class="production-data properties">
+						<dt class="accessibility">Production status:</dt>
+						<dd class="production-status">Production status:</dd>
+						<dt>System Costs</dt>
+						<dd>
+							<span>«returnTotalCost(system)» €</span>
+						</dd>
+						<dt>Finished Products</dt>
+						<dd>
+							<span id="status_produced">0</span>
+						</dd>
+					</dl>
+				</div>
+			</aside>
+	
+			<main aria-labelledby="devicesheadline">
+				<h2 class="main-headline" id="devicesheadline">Components</h2>
+					«generateAreaCode(system.areas)»
+			</main>
+		</div>
+		<footer>
+			© 2017 BIG Smart Production
+		</footer>
+	</body>
+	'''
+	
+	def generateAreaCode(EList<Area> list) '''
+	'''
+	
+	
+	
+	
+	def returnTotalCost(System system) '''
+	test cost
+	'''
+
 
 	/**
 	 * Formats an Integer by introducing thousands separator.
