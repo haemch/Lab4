@@ -13,6 +13,7 @@ import at.ac.tuwien.big.stl.Area
 import at.ac.tuwien.big.stl.Component
 import at.ac.tuwien.big.stl.Buffer
 import at.ac.tuwien.big.stl.Store
+import at.ac.tuwien.big.stl.Service
 
 class HTMLGenerator implements IGenerator {
 
@@ -27,27 +28,19 @@ class HTMLGenerator implements IGenerator {
 		
 		// generate index.html; consider the helpers defined below
 		fsa.generateFile(system.outputDir + "/" + "html" + "/"+"index.html", generateSystemCode(system));
+		
 		// TODO generate details pages details_*.html for components; consider the helpers defined below
-
-	}
-	
-	def dispatch generateFiles(EObject object, IFileSystemAccess access) {
-		println("HTMLGenerator: Ignoring model element: " + object)
-	}
-
-	private def void copyFiles(File sourceFolder, String targetFolder, IFileSystemAccess fsa) {
-		for (File sub : sourceFolder.listFiles) {
-			val subName = targetFolder + sub.name;
-			if (sub.isDirectory) {
-				copyFiles(sub, subName + File.separator, fsa);
-			} else {
-				val fis = new FileInputStream(sub);
-				(fsa as IFileSystemAccessExtension3).generateFile(subName, fis);
-				fis.close();
+		for(Area a: system.areas){
+			for(Component c: a.components){
+				fsa.generateFile(system.outputDir + "/" + "html" + "/"+"details_" + toAlphaNumerical(c.name) + ".html", generateComponentsDetail(c))
 			}
 		}
+
 	}
 	
+	
+	
+	// Functions to create index.html
 	def generateSystemCode(System system) '''
 	<!doctype html>
 	<html lang="de">
@@ -107,7 +100,6 @@ class HTMLGenerator implements IGenerator {
 		</footer>
 	</body>
 	'''
-	
 	def generateAreaCode(EList<Area> list) '''
 		«FOR Area a: list»
 			<h3>«a.name»</h3>
@@ -116,13 +108,11 @@ class HTMLGenerator implements IGenerator {
 				</div>
 		«ENDFOR»
 	'''
-	
 	def generateComponentsCode(EList<Component> list) '''
 		«FOR Component c: list»
 			«generateComponentCode(c)»
 		«ENDFOR»
 	'''
-	
 	def dispatch generateComponentCode(Component c) '''
 		<div class="device-outer">
 			<a href="details_«toAlphaNumerical(c.name)».html" class="device" title="More information about this component">
@@ -178,10 +168,8 @@ class HTMLGenerator implements IGenerator {
 			</a>
 		</div>
 	'''
-	
-	
-	
 	def returnTotalCost(System system){
+
 		var sum=0;
 		
 		for(Area a:system.areas){
@@ -191,12 +179,156 @@ class HTMLGenerator implements IGenerator {
 		}
 		formatInteger(sum)
 	}
-	
 	private def String formatComponentName(String s){
 		s.substring(0, s.length-4);
 	}
+	// End functions to create index.html
 
+	// Functions to create detail pages
+	def generateComponentsDetail(Component c) '''
+	<!doctype html>
+	<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<title>BIG Smart Production Control Panel - Details «c.name»</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="styles/style.css">
+		<script src="script/chart.bundle.js"></script>
+		<script src="script/moment.min.js" ></script>
+		<script src="script/jquery-3.2.1.js" ></script>
+		<script src="script/connect.js" ></script>
+		<script type="text/javascript">
+			$(function() {
+				createChart();
+				getTotalStatus();
+				webSocket("«c.name»","«toAlphaNumerical(c.name)»");
+			});
+		</script>
+	</head>
+	<body>
+		<header aria-labelledby="bannerheadline">
+			<a href="index.html"><img class="title-image" src="images/big-logo-small.png" alt="BIG Smart Production logo"></a>
+			<h1 class="header-title" id="bannerheadline">BIG Smart Production Control Panel</h1>
+			<nav aria-labelledby="navigationheadline">
+				<h2 class="accessibility" id="navigationheadline">Navigation</h2>
+				<ul class="navigation-list">
+					<li class="nav-items">
+						<ul>
+							<li><a href="#" onclick="restartSimulation()" class="button" accesskey="2">Start</a></li>
+						</ul>
+					</li>
+		 		</ul>
+			</nav>
+		</header>
+		<div class="main-container">
+			<main aria-labelledby="deviceheadline" class="details-container">
+				<div class="details-headline">
+					<h2 class="main-headline" id="deviceheadline">«c.name»</h2>
+				</div>
+				«generateComponentDetail(c)»
+			</main>
+		</div>
+		<footer>
+			© 2017 BIG Smart Home
+		</footer>
+	</body>
+	</html>
+	'''
+	def dispatch generateComponentDetail(Component c) '''
+	<div class="details-holder">
+						<div class="details-outer">
+							<div class="details-image-container">
+								<canvas id="utilisationChart" width="500" height="200" />
+							</div>
+							<div class="device-kpi">
+								<dl class="properties">
+									<dd>Cost: </dd>
+									<dt>«formatInteger(c.cost)» €</dt>
+									<dd>Production time: </dd>
+									<dt>«getProductionTime(c.services)» s</dt>
+									<dd>Error-rate: </dd>
+									<dt>«getErrorRate(c.services)» %</dt>
+									<dd>Average Utilization: </dd>
+									<dt id="device_«toAlphaNumerical(c.name)»_utilisation">0 %</dt>
+								</dl>
+							</div>
+						</div>
+					</div>
+	'''
+	def dispatch generateComponentDetail(Buffer b) '''
+	<div class="details-holder">
+					<div class="details-outer">
+						<div class="details-image-container">
+							<canvas id="utilisationChart" width="500" height="200" />
+						</div>
+		        		<div class="details-image-container">
+		        			<canvas id="storeChart" width="500" height="200" />
+		        		</div>
+						<div class="device-kpi">
+							<dl class="properties">
+								<dd>Cost: </dd>
+								<dt>«formatInteger(b.cost)» €</dt>
+								<dd>Production time: </dd>
+								<dt>«getProductionTime(b.services)» s</dt>
+								<dd>Error-rate: </dd>
+								<dt>«getErrorRate(b.services)» %</dt>
+								<dd>Average Utilization: </dd>
+								<dt id="device_«toAlphaNumerical(b.name)»_utilisation">0 %</dt>
+				        		<dd>Stored Elements: </dd>
+				        		<dt id="device_«toAlphaNumerical(b.name)»_elements" class="device-utilisation">0<dt>
+							</dl>
+						</div>
+					</div>
+				</div>
+	'''
+	def dispatch generateComponentDetail(Store s) '''
+	<div class="details-holder">
+					<div class="details-outer">
+						<div class="details-image-container">
+							<canvas id="utilisationChart" width="500" height="200" />
+						</div>
+		        		<div class="details-image-container">
+		        			<canvas id="storeChart" width="500" height="200" />
+		        		</div>
+						<div class="device-kpi">
+							<dl class="properties">
+								<dd>Cost: </dd>
+								<dt>«formatInteger(s.cost)» €</dt>
+								<dd>Production time: </dd>
+								<dt>«getProductionTime(s.services)» s</dt>
+								<dd>Error-rate: </dd>
+								<dt>«getErrorRate(s.services)» %</dt>
+								<dd>Average Utilization: </dd>
+								<dt id="device_«toAlphaNumerical(s.name)»_utilisation">0 %</dt>
+				        		<dd>Stored Elements: </dd>
+				        		<dt id="device_«toAlphaNumerical(s.name)»_elements" class="device-utilisation">0<dt>
+							</dl>
+						</div>
+					</div>
+				</div>
+	'''
+	def private getErrorRate(EList<Service> list) {
+		var rel =1.0; 
+		for(Service s: list){
+			rel= rel * (s.reliability);
+		}
+		
+		return formatDouble((1.0 - rel)*100);
+	}
+	def private getProductionTime(EList<Service> list) {
+		var sum=0.0; 
+		for(Service s: list){
+			sum += s.processingTime;
+		}
+		return formatDouble(sum/1000);
+	}
+	// End functions to create detail pages
 
+	// Helper functions
+	def dispatch generateFiles(EObject object, IFileSystemAccess access) {
+		println("HTMLGenerator: Ignoring model element: " + object)
+	}
+	
 	/**
 	 * Formats an Integer by introducing thousands separator.
 	 * 
@@ -256,4 +388,19 @@ class HTMLGenerator implements IGenerator {
 		val systemNameWithoutSpaces = systemNameInLowerCase.replace(" ", "")
 		systemNameWithoutSpaces
 	}
+	
+	private def void copyFiles(File sourceFolder, String targetFolder, IFileSystemAccess fsa) {
+
+		for (File sub : sourceFolder.listFiles) {
+			val subName = targetFolder + sub.name;
+			if (sub.isDirectory) {
+				copyFiles(sub, subName + File.separator, fsa);
+			} else {
+				val fis = new FileInputStream(sub);
+				(fsa as IFileSystemAccessExtension3).generateFile(subName, fis);
+				fis.close();
+			}
+		}
+	}
+	// End helper functions
 }
