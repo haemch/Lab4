@@ -1,8 +1,19 @@
 package at.ac.tuwien.big.stl.codegen.lib.util;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.URIConverter;
+import java.util.Map;
+import java.io.File;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
+
+import at.ac.tuwien.big.stl.STLPackage;
+import at.ac.tuwien.big.stl.impl.STLPackageImpl;
+import at.ac.tuwien.big.stl.simulation.STLSimulationPackage;
 import at.ac.tuwien.big.stl.simulation.SimulationModel;
 
 public class ModelLoader {
@@ -17,7 +28,27 @@ public class ModelLoader {
 	 */
 	public static SimulationModel load(String path) {
 		// TODO
-		return null;
+		// register XMI resource factory for .xmi extension
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("stlsimulation", new XMIResourceFactoryImpl());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("stl", new XMIResourceFactoryImpl());
+		
+		// create resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		
+		// register STL metamodel
+		resourceSet.getPackageRegistry().put(STLPackage.eINSTANCE.getNsURI(),
+				STLPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(STLSimulationPackage.eINSTANCE.getNsURI(),
+				STLSimulationPackage.eINSTANCE);
+		
+		// create file URI
+		URI fileUri = ModelLoader.createURI(path);
+		
+		// load resource
+		Resource resource = resourceSet.getResource(fileUri, true);
+		
+		// retrieve first EObject in the resource
+		return (SimulationModel)(resource.getContents().get(0));
 	}
 
 	/**
