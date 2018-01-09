@@ -20,8 +20,37 @@ class ServerGenerator implements IGenerator {
 		val system = simModel.system
 		if (system !== null) {
 			// TODO generate the server class; consider the helpers defined below 
+			fsa.generateFile(getOutputDir(simModel) + "/server/" + toAlphaNumerical(system.name) +  "Server.java", 
+				generateCode(simModel)
+			);
 		}
 	}
+	
+	def generateCode(SimulationModel simModel){
+		val system = simModel.system
+		'''
+			package «toAlphaNumerical(system.name.toLowerCase)».server;
+			
+			import java.io.File;
+			import java.io.IOException;
+			
+			import at.ac.tuwien.big.stl.codegen.lib.server.Server.SimpleServer;
+			import at.ac.tuwien.big.stl.codegen.lib.util.ModelLoader;
+			import at.ac.tuwien.big.stl.simulation.SimulationModel;
+			
+			public class «toAlphaNumerical(system.name)»Server {
+			
+				public static void main(String[] args) throws IOException {
+					SimulationModel simModel = ModelLoader.load("«getPath(simModel)»");
+					File outputDir = new File("src-gen/«toAlphaNumerical(system.name.toLowerCase)»/html");
+					SimpleServer server = new SimpleServer(simModel, null, «port», outputDir, false);
+					server.configSimulatorAndRun();
+					server.start();
+				}
+			}	
+		'''
+	}
+		
 
 	private def dispatch generateFiles(EObject object, IFileSystemAccess access) {
 		println("ServerGenerator: Ignoring model element: " + object)
