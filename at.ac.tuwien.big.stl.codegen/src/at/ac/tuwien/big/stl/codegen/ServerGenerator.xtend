@@ -19,7 +19,6 @@ class ServerGenerator implements IGenerator {
 	private def dispatch generateFiles(SimulationModel simModel, IFileSystemAccess fsa) {
 		val system = simModel.system
 		if (system !== null) {
-			// TODO generate the server class; consider the helpers defined below 
 			fsa.generateFile(getOutputDir(simModel) + "/server/" + toAlphaNumerical(system.name) +  "Server.java", 
 				generateCode(simModel)
 			);

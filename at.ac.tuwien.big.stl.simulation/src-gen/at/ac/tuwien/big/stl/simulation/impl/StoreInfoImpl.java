@@ -100,8 +100,17 @@ public class StoreInfoImpl extends ComponentInfoImpl implements StoreInfo {
 	 * @return returns always true
 	 */
 	private boolean process(WasteStore comp) {
-		// TODO 
-		throw new UnsupportedOperationException("Operation not implemented yet");
+		for(ConnectorInfo inCon : getInputConnectors()) {
+			ItemInfo curItem = inCon.getItem();
+			if(curItem != null) {
+				if(this.getStoredItems().size() < comp.getCapacity()) {
+					this.getStoredItems().add(curItem);
+					long updatedUseTime = this.getUseTime() + this.getProcessingTime();
+					this.setUseTime(updatedUseTime); 
+				}
+			}
+		}
+		return true;
 	}
 
 	private boolean process(ProductStore comp) {

@@ -25,7 +25,6 @@ public class ModelStore {
 	 *            Path at which the STL simulation model should be stored 
 	 */
 	public static void store(SimulationModel simModel, String path){
-		// TODO
 		
 		// register XMI resource factory for .xmi extension
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("stlsimulation", new XMIResourceFactoryImpl());

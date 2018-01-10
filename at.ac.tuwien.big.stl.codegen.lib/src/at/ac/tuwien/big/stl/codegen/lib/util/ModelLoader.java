@@ -27,7 +27,7 @@ public class ModelLoader {
 	 *         located in the specified path
 	 */
 	public static SimulationModel load(String path) {
-		// TODO
+		
 		// register XMI resource factory for .xmi extension
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("stlsimulation", new XMIResourceFactoryImpl());
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("stl", new XMIResourceFactoryImpl());
